@@ -1,9 +1,9 @@
 <h1>rgur</h1>
-
+<a href="{% url 'bibliotheque:ajouter' %}">Ajouter un livre</a>
 {% for livre in livres %}
 <ul>
     <li>
-        <a href="{% url 'bibliotheque:details' livre.id %}">{{livre}}</a>
+        <a href="{% url 'bibliotheque:details' livre.id %}">{{livre}}</a><a href="{% url 'bibliotheque:delete' livre.id %}">Supprimer</a><a href="{% url 'bibliotheque:modifier' livre.id %}">Modifier</a>
     </li>
 </ul>
 {% endfor %}

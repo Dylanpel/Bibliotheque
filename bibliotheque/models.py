@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Auteur(models.Model):
@@ -25,5 +26,9 @@ class Livre(models.Model):
     auteur = models.ManyToManyField(Auteur)
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
     edition = models.ForeignKey(Edition, on_delete=models.CASCADE)
+
+    def get_absolute_url(self):
+        return reverse('bibliotheque:details', kwargs={'pk': self.pk})
+    
     def __str__(self):
         return self.titre

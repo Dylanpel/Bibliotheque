@@ -6,4 +6,7 @@ urlpatterns = [
     # ex: /polls/
     path("", views.IndexViews.as_view(), name="index"),
     path("<int:pk>/", views.DetailView.as_view(), name="details"),
+    path("ajouter", views.LivreCreate.as_view(), name="ajouter"),
+    path("<int:pk>/modifier", views.LivreUpdate.as_view(), name="modifier"),
+    path("<int:pk>/supprimer", views.LivreDelete.as_view(), name="delete")
 ]
