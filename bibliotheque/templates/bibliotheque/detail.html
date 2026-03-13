@@ -1,0 +1,14 @@
+<h1>fiche livre : {{livre.titre}}</h1>
+
+<ul>
+    <li>{{livre.description}}</li>
+    <li>
+        {% for auteur in livre.auteur.all %}
+            {{auteur.nom}} {{auteur.prenom}}
+        {% endfor %}
+    </li>
+    <li>{{livre.date_parution}}</li>
+    <li>{{livre.isbn}}</li>
+    <li>{{livre.edition}}</li>
+    <li>{{livre.categorie}}</li>
+</ul>

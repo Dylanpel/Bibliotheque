@@ -1,0 +1,9 @@
+<h1>rgur</h1>
+
+{% for livre in livres %}
+<ul>
+    <li>
+        <a href="{% url 'bibliotheque:details' livre.id %}">{{livre}}</a>
+    </li>
+</ul>
+{% endfor %}
