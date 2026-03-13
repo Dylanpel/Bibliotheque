@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import generic
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.shortcuts import redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 import json
 from datetime import date
@@ -40,27 +41,26 @@ class LivreCreate(CreateView):
 
         with urlopen(url, timeout=10) as response:
             payload = json.loads(response.read().decode("utf-8"))
-        
-        print(payload["items"][0]["volumeInfo"]["title"])
-        print(payload["items"][0]["volumeInfo"]["authors"])
-        print(payload["items"][0]["volumeInfo"]["publisher"])
-        print(payload["items"][0]["volumeInfo"]["publishedDate"])
-        print(payload["items"][0]["volumeInfo"]["description"])
 
-        initial["titre"] = payload["items"][0]["volumeInfo"]["title"]
-        initial["description"] = payload["items"][0]["volumeInfo"]["description"]
-        initial["date_parution"] = payload["items"][0]["volumeInfo"]["publishedDate"]
+        if not payload.get("items"):
+            return initial
 
-        edition = payload["items"][0]["volumeInfo"]["publisher"]
-        if Edition.objects.filter(libelle=edition).count() == 0:
-            Edition.objects.create(libelle=edition)
+        info = payload["items"][0]["volumeInfo"]
 
+        initial["titre"] = info.get("title", "")
+        initial["description"] = info.get("description", "")
+        initial["date_parution"] = info.get("publishedDate", "")
+        initial["isbn"] = isbn
 
-        for auteur in payload["items"][0]["volumeInfo"]["authors"]:
-           if Auteur.objects.filter(nom=auteur).count() == 0:
-               Auteur.objects.create(nom = auteur)
-               
-        initial["isbn"]= isbn
+        publisher = info.get("publisher")
+        if publisher:
+            if Edition.objects.filter(libelle=publisher).count() == 0:
+                Edition.objects.create(libelle=publisher)
+
+        for auteur in info.get("authors", []):
+            if Auteur.objects.filter(nom=auteur).count() == 0:
+                Auteur.objects.create(nom=auteur)
+
         return initial
 
 class LivreDelete(DeleteView):
