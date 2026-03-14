@@ -1,10 +1,31 @@
-<h1>rgur</h1>
+<h1>Ma Bibliotheque</h1>
 <a href="{% url 'bibliotheque:ajouter' %}">Ajouter un livre</a>
 <a href="{% url 'bibliotheque:isbn' %}">scan isbn</a>
+
+<h4>Liste des 5 derniers Livres</h4>
 {% for livre in livres %}
 <ul>
     <li>
         <a href="{% url 'bibliotheque:details' livre.id %}">{{livre}}</a><a href="{% url 'bibliotheque:delete' livre.id %}">Supprimer</a><a href="{% url 'bibliotheque:modifier' livre.id %}">Modifier</a>
+    </li>
+</ul>
+{% endfor %}
+
+
+<h4>Liste des 5 derniers Auteurs</h4>
+{% for auteurs in auteur %}
+<ul>
+    <li>
+        {{auteurs}}
+    </li>
+</ul>
+{% endfor %}
+
+<h4>Liste des 5 derniers editions</h4>
+{% for editions in edition %}
+<ul>
+    <li>
+        {{editions}}
     </li>
 </ul>
 {% endfor %}

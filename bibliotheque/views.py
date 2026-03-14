@@ -14,6 +14,11 @@ from .models import Auteur, Livre, Categorie, Edition
 class IndexViews(generic.ListView): 
     context_object_name = "livres"
     model = Livre
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["auteur"] = Auteur.objects.all().order_by("-nom")[:5]
+        context["edition"] = Edition.objects.all().order_by("-libelle")[:5]
+        return context
 
 class DetailView(generic.DetailView):
     model = Livre
