@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #1e1e2e;">
+  <div class="container">
+
+    <!-- Logo / Brand -->
+    <a class="navbar-brand d-flex align-items-center gap-2 text-white fw-bold fs-5" href="">
+      Bibliothèque
+    </a>
+
+    <!-- Toggler mobile -->
+    <button class="navbar-toggler border-0" type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Liens -->
+    <div class="collapse navbar-collapse" id="mainNavbar">
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
+        <li class="nav-item">
+          <a class="nav-link text-white rounded-3 px-3 active" href="#">
+            <i class="bi bi-house-fill me-1"></i> Accueil
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white-50 rounded-3 px-3" href="{% url 'bibliotheque:livres'%}">
+            <i class="bi bi-book me-1"></i> Livres
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white-50 rounded-3 px-3" href="#">
+            <i class="bi bi-person me-1"></i> Auteurs
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white-50 rounded-3 px-3" href="#">
+            <i class="bi bi-building me-1"></i> Éditions
+          </a>
+        </li>
+      </ul>
+
+      </div>
+
+    </div>
+  </div>
+</nav>

@@ -1,16 +1,121 @@
-<h1>fiche livre : {{livre.titre}}</h1>
+{% extends 'bibliotheque/base.html' %}
 
-<ul>
-    <li>{{livre.description}}</li>
-    <li>
-        {% for auteur in livre.auteur.all %}
-            {{auteur.nom}} {{auteur.prenom}}
-        {% endfor %}
-    </li>
-    <li>{{livre.date_parution}}</li>
-    <li>{{livre.isbn}}</li>
-    <li>{{livre.edition}}</li>
-    <li>{{livre.categorie}}</li>
-</ul>
+{% block content %}
 
-<a href="{% url 'bibliotheque:index' %}">Retour liste livre</a>
+<!-- Bouton retour -->
+<div class="mb-4">
+  <a href="{% url 'bibliotheque:livres' %}" class="btn btn-outline-secondary rounded-pill px-4">
+    <i class="bi bi-arrow-left me-1"></i> Retour à la liste
+  </a>
+</div>
+
+<!-- Card principale -->
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+  <!-- Bandeau coloré en haut -->
+  <div style="height: 10px; background: linear-gradient(90deg, #4f46e5, #7c3aed);"></div>
+
+  <div class="card-body p-5">
+    <div class="row g-5">
+
+      <!-- Colonne gauche : infos principales -->
+      <div class="col-md-8">
+
+        <!-- Catégorie + badge -->
+        <div class="mb-3">
+          <span class="badge bg-primary-subtle text-primary rounded-pill fw-normal px-3 py-2">
+            <i class="bi bi-tag me-1"></i>{{ livre.categorie }}
+          </span>
+        </div>
+
+        <!-- Titre -->
+        <h1 class="fw-bold mb-2">{{ livre.titre }}</h1>
+
+        <!-- Auteurs -->
+        <p class="text-muted fs-6 mb-4">
+          <i class="bi bi-person me-1"></i>
+          {% for auteur in livre.auteur.all %}
+            <span class="fw-medium text-dark">{{ auteur.nom }} {{ auteur.prenom }}</span>
+            {% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </p>
+
+        <!-- Séparateur -->
+        <hr class="mb-4">
+
+        <!-- Description -->
+        <h6 class="fw-semibold text-uppercase text-muted small mb-2">Description</h6>
+        <p class="text-dark lh-lg">{{ livre.description }}</p>
+
+      </div>
+
+      <!-- Colonne droite : métadonnées -->
+      <div class="col-md-4">
+        <div class="card border-0 bg-light rounded-4 p-4">
+
+          <h6 class="fw-semibold text-uppercase text-muted small mb-3">Informations</h6>
+
+          <!-- Date parution -->
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="bg-white rounded-3 shadow-sm p-2 text-primary">
+              <i class="bi bi-calendar3 fs-5"></i>
+            </div>
+            <div>
+              <p class="text-muted small mb-0">Date de parution</p>
+              <p class="fw-semibold mb-0">{{ livre.date_parution }}</p>
+            </div>
+          </div>
+
+          <!-- Edition -->
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="bg-white rounded-3 shadow-sm p-2 text-success">
+              <i class="bi bi-building fs-5"></i>
+            </div>
+            <div>
+              <p class="text-muted small mb-0">Édition</p>
+              <p class="fw-semibold mb-0">{{ livre.edition }}</p>
+            </div>
+          </div>
+
+          <!-- ISBN -->
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="bg-white rounded-3 shadow-sm p-2 text-warning">
+              <i class="bi bi-upc fs-5"></i>
+            </div>
+            <div>
+              <p class="text-muted small mb-0">ISBN</p>
+              <p class="fw-semibold mb-0">{{ livre.isbn }}</p>
+            </div>
+          </div>
+
+          <!-- Catégorie -->
+          <div class="d-flex align-items-center gap-3">
+            <div class="bg-white rounded-3 shadow-sm p-2 text-danger">
+              <i class="bi bi-bookmark fs-5"></i>
+            </div>
+            <div>
+              <p class="text-muted small mb-0">Catégorie</p>
+              <p class="fw-semibold mb-0">{{ livre.categorie }}</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Boutons actions -->
+        <div class="d-grid gap-2 mt-4">
+          <a href="{% url 'bibliotheque:modifier' livre.id %}"
+             class="btn btn-outline-primary rounded-pill">
+            <i class="bi bi-pencil me-1"></i> Modifier
+          </a>
+          <a href="{% url 'bibliotheque:delete' livre.id %}"
+             class="btn btn-outline-danger rounded-pill">
+            <i class="bi bi-trash3-fill me-1"></i> Supprimer
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

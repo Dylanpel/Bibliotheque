@@ -1,0 +1,115 @@
+{% extends 'bibliotheque/base.html' %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="fw-bold mb-0">Tous les Livres</h1>
+    <p class="text-muted small mb-0">{{ livres|length }} livre(s) disponible(s)</p>
+  </div>
+  <div class="d-flex gap-2">
+    {% if order == 'asc' %}
+      <a href="?order=desc" class="btn btn-outline-secondary rounded-pill px-4">
+       Filtre</i> <i class="bi bi-arrow-up"></i>
+      </a>
+    {% else %}
+      <a href="?order=asc" class="btn btn-outline-secondary rounded-pill px-4">
+        Filtre</i> <i class="bi bi-arrow-down"></i>
+      </a>
+    {% endif %}
+    <a href="{% url 'bibliotheque:ajouter' %}" class="btn btn-primary rounded-pill px-4">
+      <i class="bi bi-plus-lg me-1"></i> Ajouter un livre
+    </a>
+    <a href="{% url 'bibliotheque:isbn' %}" class="btn btn-outline-secondary rounded-pill px-4">
+      <i class="bi bi-upc-scan me-1"></i> Scan ISBN
+    </a>
+  </div>
+</div>
+
+<!-- Grille de cards -->
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for livre in livres %}
+  <div class="col">
+    <div class="card h-100 border-0 shadow-sm rounded-4">
+
+      <!-- Couleur décorative en haut -->
+      <div class="rounded-top-4" style="height: 8px; background: linear-gradient(90deg, #4f46e5, #7c3aed);"></div>
+
+      <div class="card-body px-4 pt-3">
+
+        <!-- Catégorie + Année -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge bg-primary-subtle text-primary rounded-pill fw-normal">
+            <i class="bi bi-tag me-1"></i>{{ livre.categorie }}
+          </span>
+          <span class="text-muted small">
+            <i class="bi bi-calendar3 me-1"></i>{{ livre.date_parution }}
+          </span>
+        </div>
+
+        <!-- Titre -->
+        <h5 class="card-title fw-bold mb-1">{{ livre.titre }}</h5>
+
+        <!-- Auteurs -->
+        <p class="text-muted small mb-2">
+          <i class="bi bi-person me-1"></i>
+          {% for auteur in livre.auteur.all %}
+            {{ auteur }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </p>
+
+        <!-- Edition -->
+        <p class="text-muted small mb-2">
+          <i class="bi bi-building me-1"></i>{{ livre.edition }}
+        </p>
+
+        <!-- Description -->
+        <p class="card-text text-muted small" style="
+             display: -webkit-box;
+             -webkit-line-clamp: 3;
+             -webkit-box-orient: vertical;
+             overflow: hidden;">
+          {{ livre.description }}
+        </p>
+
+      </div>
+
+      <!-- Footer card -->
+      <div class="card-footer bg-white border-0 px-4 pb-3 d-flex justify-content-between align-items-center">
+        <span class="text-muted small">
+          <i class="bi bi-upc me-1"></i>{{ livre.isbn }}
+        </span>
+        <div class="d-flex gap-1">
+          <a href="{% url 'bibliotheque:details' livre.id %}"
+             class="btn btn-sm btn-outline-primary rounded-pill px-3">
+            <i class="bi bi-eye me-1"></i>Détails
+          </a>
+          <a href="{% url 'bibliotheque:modifier' livre.id %}"
+             class="btn btn-sm btn-outline-secondary">
+            <i class="bi bi-pencil"></i>
+          </a>
+          <a href="{% url 'bibliotheque:delete' livre.id %}"
+             class="btn btn-sm btn-outline-danger">
+            <i class="bi bi-trash3-fill"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  {% empty %}
+  <!-- Aucun livre -->
+  <div class="col-12">
+    <div class="text-center py-5 text-muted">
+      <i class="bi bi-book display-1 opacity-25"></i>
+      <p class="mt-3 fs-5">Aucun livre dans la bibliothèque</p>
+      <a href="{% url 'bibliotheque:ajouter' %}" class="btn btn-primary rounded-pill px-4 mt-2">
+        <i class="bi bi-plus-lg me-1"></i> Ajouter votre premier livre
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

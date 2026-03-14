@@ -14,10 +14,28 @@ from .models import Auteur, Livre, Categorie, Edition
 class IndexViews(generic.ListView): 
     context_object_name = "livres"
     model = Livre
+    def get_queryset(self):
+        return Livre.objects.order_by("-id")[:5]
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["auteur"] = Auteur.objects.all().order_by("-nom")[:5]
         context["edition"] = Edition.objects.all().order_by("-libelle")[:5]
+        return context
+
+class ListeLivre(generic.ListView):
+    model = Livre
+    template_name = "bibliotheque/liste-livre.html"
+    context_object_name = "livres"
+    def get_queryset(self):
+        order = self.request.GET.get('order', 'asc')
+        if order == 'asc':
+             return Livre.objects.order_by("id")
+        else :
+             return Livre.objects.order_by("-id")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['order'] = self.request.GET.get('order', 'asc')
         return context
 
 class DetailView(generic.DetailView):

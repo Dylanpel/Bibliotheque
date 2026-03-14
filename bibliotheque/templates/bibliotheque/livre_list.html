@@ -1,31 +1,88 @@
-<h1>Ma Bibliotheque</h1>
-<a href="{% url 'bibliotheque:ajouter' %}">Ajouter un livre</a>
-<a href="{% url 'bibliotheque:isbn' %}">scan isbn</a>
+{% extends 'bibliotheque/base.html' %}
 
-<h4>Liste des 5 derniers Livres</h4>
-{% for livre in livres %}
-<ul>
-    <li>
-        <a href="{% url 'bibliotheque:details' livre.id %}">{{livre}}</a><a href="{% url 'bibliotheque:delete' livre.id %}">Supprimer</a><a href="{% url 'bibliotheque:modifier' livre.id %}">Modifier</a>
-    </li>
-</ul>
-{% endfor %}
+{% block content %}
 
+<!-- Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="fw-bold mb-0">Ma Bibliothèque</h1>
+    <p class="text-muted small mb-0">Aperçu de vos derniers ajouts</p>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="{% url 'bibliotheque:ajouter' %}" class="btn btn-primary rounded-pill px-4">
+      <i class="bi bi-plus-lg me-1"></i> Ajouter un livre
+    </a>
+    <a href="{% url 'bibliotheque:isbn' %}" class="btn btn-outline-secondary rounded-pill px-4">
+      <i class="bi bi-upc-scan me-1"></i> Scan ISBN
+    </a>
+  </div>
+</div>
 
-<h4>Liste des 5 derniers Auteurs</h4>
-{% for auteurs in auteur %}
-<ul>
-    <li>
-        {{auteurs}}
-    </li>
-</ul>
-{% endfor %}
+<!-- 3 colonnes -->
+<div class="row g-4">
 
-<h4>Liste des 5 derniers editions</h4>
-{% for editions in edition %}
-<ul>
-    <li>
-        {{editions}}
-    </li>
-</ul>
-{% endfor %}
+  <!-- Livres -->
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm border-0 rounded-4">
+      <div class="card-header bg-primary text-white fw-semibold rounded-top-4 border-0">
+        <i class="bi bi-book me-2"></i>5 derniers Livres
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for livre in livres %}
+        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+          <a href="{% url 'bibliotheque:details' livre.id %}"
+             class="text-decoration-none text-dark fw-medium text-truncate me-2"
+             style="max-width: 160px;">
+            {{ livre }}
+          </a>
+          <div class="d-flex gap-1 flex-shrink-0">
+            <a href="{% url 'bibliotheque:modifier' livre.id %}" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <a href="{% url 'bibliotheque:delete' livre.id %}" class="btn btn-sm btn-outline-danger">
+              <i class="bi bi-trash3-fill"></i>
+            </a>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Auteurs -->
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm border-0 rounded-4">
+      <div class="card-header bg-success text-white fw-semibold rounded-top-4 border-0">
+        <i class="bi bi-person me-2"></i>5 derniers Auteurs
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for auteurs in auteur %}
+        <li class="list-group-item d-flex align-items-center gap-2 py-3">
+          <span class="badge bg-success rounded-pill">{{ forloop.counter }}</span>
+          {{ auteurs }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Editions -->
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm border-0 rounded-4">
+      <div class="card-header bg-warning fw-semibold rounded-top-4 border-0">
+        <i class="bi bi-building me-2"></i>5 dernières Éditions
+      </div>
+      <ul class="list-group list-group-flush">
+        {% for editions in edition %}
+        <li class="list-group-item d-flex align-items-center gap-2 py-3">
+          <span class="badge bg-warning text-dark rounded-pill">{{ forloop.counter }}</span>
+          {{ editions }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
